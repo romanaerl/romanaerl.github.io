@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roman Simonov</title>
+  <meta name="description" content="Roman Simonov — London. Side projects: M5StickPomodoro, Advent of Code.">
+  <style>
+    :root {
+      --bg: #fbfaf8; --fg: #1d1d1f; --muted: #6b6b70; --line: #e4e2dd; --card: #ffffff;
+      --accent: #f26b1d; --link: #c4500f;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #111113; --fg: #ececee; --muted: #9a9aa2; --line: #2a2a2e; --card: #18181b; --link: #ff8a45; }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+    }
+    main { max-width: 720px; margin: 0 auto; padding: 72px 20px 56px; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header h1 { font-size: 44px; line-height: 1.1; margin: 0 0 12px; letter-spacing: -0.02em; }
+    header .where { color: var(--muted); margin: 0 0 20px; }
+    header .links { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 56px 0 16px; font-weight: 600; }
+
+    .project {
+      background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+      padding: 20px 22px; margin: 0 0 14px;
+    }
+    .project h3 { margin: 0 0 6px; font-size: 20px; }
+    .project p { margin: 0 0 10px; }
+    .project .meta { color: var(--muted); font-size: 14px; margin: 0 0 10px; }
+    .project .links { display: flex; gap: 16px; flex-wrap: wrap; font-size: 15px; }
+    .project.featured { border-left: 4px solid var(--accent); }
+
+    footer { color: var(--muted); font-size: 14px; margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--line); }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Roman Simonov</h1>
+    <p class="where">London, UK</p>
+    <nav class="links">
+      <a href="https://github.com/romanaerl">GitHub</a>
+    </nav>
+  </header>
+
+  <h2>Projects</h2>
+
+  <article class="project featured">
+    <h3>M5StickPomodoro</h3>
+    <p class="meta">C++ · ESP32 · M5StickC Plus / M5StickC</p>
+    <p>A standalone, battery-friendly Pomodoro timer for the M5Stick, controlled mostly by how the device is placed:
+      face down pauses, standing it on its end shows a big countdown bar, a tap on the table shows the time.
+      Work and break modes, deep sleep, no Wi-Fi, no phone.</p>
+    <div class="links">
+      <a href="https://romanaerl.github.io/M5StickPomodoro/">Install from the browser</a>
+      <a href="https://github.com/romanaerl/M5StickPomodoro">Source</a>
+    </div>
+  </article>
+
+  <article class="project">
+    <h3>Advent of Code</h3>
+    <p class="meta">PHP · Python</p>
+    <p>My solutions to Advent of Code puzzles — first takes that stop as soon as the right answer comes out,
+      not polished code.</p>
+    <div class="links">
+      <a href="https://github.com/romanaerl/advent24">Source</a>
+      <a href="https://adventofcode.com/">adventofcode.com</a>
+    </div>
+  </article>
+
+  <footer>© Roman Simonov · Hosted on GitHub Pages</footer>
+</main>
+</body>
+</html>
