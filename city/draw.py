@@ -4,10 +4,12 @@ Front row: repos shown in full (public, or private and allowed), each on a perma
 Back rows: other private repos as anonymous hazy silhouettes, each on a permanent lot.
 Skybridges = dependencies/submodules, thin wires = same name prefix, cranes = work since the last edition.
 
-usage: python3 draw.py editions/edition-3.json editions/edition-3.svg
+usage: python3 draw.py editions/edition-3.json
+Every frame ever drawn is kept: it goes to frames/<save date>-edition-<N>.svg, and a redraw on the same day
+gets -2, -3... instead of overwriting. The frames folder in date order is the cartoon. Prints the frame path.
 The snapshot gets the lots of new repos written back (front and back), so the next edition keeps them in place.
 """
-import json, math, sys
+import datetime, json, math, os, sys
 
 W, H, BASE = 240, 180, 129
 LANG = {'C++': ('#c8643a', '#a94f2b'), 'PHP': ('#8a7fc0', '#6f65a3'), 'HTML': ('#bdb5a8', '#9f978b'),
@@ -203,8 +205,16 @@ def svg(title):
 
 
 if __name__ == '__main__':
-    snap_path, svg_path = sys.argv[1], sys.argv[2]
+    snap_path = sys.argv[1]
     data = json.load(open(snap_path))
     scene(data)
-    open(svg_path, 'w').write(svg(f"Roman's repo city, edition {data['edition']}"))
+    frames = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'frames')
+    os.makedirs(frames, exist_ok=True)
+    stem = f"{datetime.date.today().isoformat()}-edition-{data['edition']}"
+    path, n = os.path.join(frames, stem + '.svg'), 1
+    while os.path.exists(path):
+        n += 1
+        path = os.path.join(frames, f'{stem}-{n}.svg')
+    open(path, 'w').write(svg(f"Roman's repo city, edition {data['edition']}"))
     open(snap_path, 'w').write(json.dumps(data, indent=1) + '\n')
+    print(os.path.relpath(path, os.path.dirname(frames)))
