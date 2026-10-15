@@ -1,0 +1,3 @@
+# Private repos that may appear in the city picture in full, as if they were public:
+# real name as a label, language colour, windows, balloons. One repo name per line.
+# Everything private that is not listed here stays an anonymous grey silhouette.
