@@ -188,8 +188,17 @@ def blueprint(x, y):
     r(x + 14, y - 8, 4, 8, '#2f578f'); r(x + 15, y - 8, 2, 1, '#9fc1ea')
 
 
+def dimmer(x, y):
+    r(x, y - 7, 14, 7, '#3b3b44'); r(x + 2, y - 4, 10, 1, '#7a7a80')
+    r(x + 2, y - 4, 2, 1, '#f26b1d'); r(x + 3, y - 6, 2, 4, '#f5894a')
+    r(x + 5, y - 12, 3, 3, '#ffd866')
+    for dx, dy in [(-1, -1), (3, -1), (-1, 3), (3, 3), (1, -2), (1, 4)]:
+        r(x + 5 + dx, y - 12 + dy, 1, 1, '#f2b134')
+
+
 PROPS = {
     'blueprint': ('The city plan: this picture grows with every edition', blueprint),
+    'dimmer': ('Screen brightness: 70 out of 512, picked by eye', dimmer),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178)]
 

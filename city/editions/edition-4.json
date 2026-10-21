@@ -1,0 +1,428 @@
+{
+ "edition": 4,
+ "date": "2026-10-21",
+ "prev_date": "2026-10-15",
+ "repos": [
+  {
+   "id": "10003296",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2013-05-11",
+   "pushed": "2014-01-24",
+   "commits": 134
+  },
+  {
+   "id": "16644718",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2014-02-08",
+   "pushed": "2014-09-25",
+   "commits": 7
+  },
+  {
+   "id": "26972274",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2014-11-21",
+   "pushed": "2015-04-22",
+   "commits": 21
+  },
+  {
+   "id": "37485234",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2015-06-15",
+   "pushed": "2016-08-21",
+   "commits": 9
+  },
+  {
+   "id": "162127068",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2018-12-17",
+   "pushed": "2019-01-09",
+   "commits": 5
+  },
+  {
+   "id": "162127377",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2018-12-17",
+   "pushed": "2019-01-09",
+   "commits": 3
+  },
+  {
+   "id": "223177250",
+   "shown": true,
+   "fork": true,
+   "archived": false,
+   "created": "2019-11-21",
+   "pushed": "2019-10-06",
+   "commits": 0,
+   "label": "libremarkable",
+   "lang": null,
+   "stars": 0,
+   "releases": 0
+  },
+  {
+   "id": "223177661",
+   "shown": true,
+   "fork": true,
+   "archived": false,
+   "created": "2019-11-21",
+   "pushed": "2018-10-12",
+   "commits": 0,
+   "label": "ReMarkableAPI",
+   "lang": null,
+   "stars": 0,
+   "releases": 0
+  },
+  {
+   "id": "530237245",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2022-08-29",
+   "pushed": "2022-08-29",
+   "commits": 6
+  },
+  {
+   "id": "897899675",
+   "shown": true,
+   "fork": false,
+   "archived": false,
+   "created": "2024-12-03",
+   "pushed": "2026-08-22",
+   "commits": 88,
+   "label": "advent24",
+   "lang": "PHP",
+   "stars": 2,
+   "releases": 0
+  },
+  {
+   "id": "900482242",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2024-12-08",
+   "pushed": "2024-12-08",
+   "commits": 2
+  },
+  {
+   "id": "948186306",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2025-03-13",
+   "pushed": "2025-03-13",
+   "commits": 1
+  },
+  {
+   "id": "998951277",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2025-06-09",
+   "pushed": "2025-06-09",
+   "commits": 37
+  },
+  {
+   "id": "1030351354",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2025-08-01",
+   "pushed": "2026-05-07",
+   "commits": 131
+  },
+  {
+   "id": "1040773846",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2025-08-19",
+   "pushed": "2025-08-19",
+   "commits": 2
+  },
+  {
+   "id": "1041993867",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2025-08-21",
+   "pushed": "2025-08-21",
+   "commits": 9
+  },
+  {
+   "id": "1197464631",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2026-03-31",
+   "pushed": "2026-07-12",
+   "commits": 8
+  },
+  {
+   "id": "1210762049",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2026-04-14",
+   "pushed": "2026-04-18",
+   "commits": 6
+  },
+  {
+   "id": "1231316259",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2026-05-06",
+   "pushed": "2026-10-21",
+   "commits": 1336
+  },
+  {
+   "id": "1237464483",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2026-05-13",
+   "pushed": "2026-05-13",
+   "commits": 1
+  },
+  {
+   "id": "1237745500",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2026-05-13",
+   "pushed": "2026-10-21",
+   "commits": 777
+  },
+  {
+   "id": "1238032255",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2026-05-13",
+   "pushed": "2026-10-21",
+   "commits": 1093
+  },
+  {
+   "id": "1337636362",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2026-08-17",
+   "pushed": "2026-10-17",
+   "commits": 52
+  },
+  {
+   "id": "1360505409",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2026-09-07",
+   "pushed": "2026-10-12",
+   "commits": 54
+  },
+  {
+   "id": "1380695148",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2026-09-22",
+   "pushed": "2026-10-12",
+   "commits": 23
+  },
+  {
+   "id": "1391490898",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2026-09-27",
+   "pushed": "2026-10-12",
+   "commits": 182
+  },
+  {
+   "id": "1407633578",
+   "shown": false,
+   "fork": false,
+   "archived": false,
+   "created": "2026-10-06",
+   "pushed": "2026-10-06",
+   "commits": 0
+  },
+  {
+   "id": "1410437459",
+   "shown": true,
+   "fork": false,
+   "archived": false,
+   "created": "2026-10-08",
+   "pushed": "2026-10-15",
+   "commits": 60,
+   "label": "M5StickPomodoro",
+   "lang": "C++",
+   "stars": 0,
+   "releases": 5
+  },
+  {
+   "id": "1411983443",
+   "shown": true,
+   "fork": false,
+   "archived": false,
+   "created": "2026-10-09",
+   "pushed": "2026-10-15",
+   "commits": 13,
+   "label": "romanaerl.github.io",
+   "lang": "Python",
+   "stars": 0,
+   "releases": 0
+  }
+ ],
+ "links": [
+  {
+   "a": "1231316259",
+   "b": "1237745500",
+   "kind": "dep"
+  },
+  {
+   "a": "1231316259",
+   "b": "1237745500",
+   "kind": "family"
+  },
+  {
+   "a": "1237745500",
+   "b": "1238032255",
+   "kind": "dep"
+  },
+  {
+   "a": "1237745500",
+   "b": "1238032255",
+   "kind": "family"
+  },
+  {
+   "a": "1238032255",
+   "b": "1337636362",
+   "kind": "family"
+  },
+  {
+   "a": "162127068",
+   "b": "162127377",
+   "kind": "family"
+  }
+ ],
+ "slots": {
+  "1410437459": 24,
+  "897899675": 56,
+  "deleted-1": 152,
+  "1411983443": 216
+ },
+ "back_lots": {
+  "10003296": [
+   0,
+   0
+  ],
+  "16644718": [
+   0,
+   1
+  ],
+  "26972274": [
+   0,
+   2
+  ],
+  "37485234": [
+   0,
+   3
+  ],
+  "162127068": [
+   0,
+   4
+  ],
+  "162127377": [
+   0,
+   5
+  ],
+  "530237245": [
+   0,
+   6
+  ],
+  "900482242": [
+   0,
+   7
+  ],
+  "948186306": [
+   0,
+   8
+  ],
+  "998951277": [
+   0,
+   9
+  ],
+  "1030351354": [
+   0,
+   10
+  ],
+  "1040773846": [
+   0,
+   11
+  ],
+  "1041993867": [
+   0,
+   12
+  ],
+  "1197464631": [
+   0,
+   13
+  ],
+  "1210762049": [
+   0,
+   14
+  ],
+  "1231316259": [
+   0,
+   15
+  ],
+  "1237464483": [
+   0,
+   16
+  ],
+  "1237745500": [
+   0,
+   17
+  ],
+  "1238032255": [
+   0,
+   18
+  ],
+  "1337636362": [
+   0,
+   19
+  ],
+  "1360505409": [
+   0,
+   20
+  ],
+  "1380695148": [
+   0,
+   21
+  ],
+  "1391490898": [
+   0,
+   22
+  ],
+  "1407633578": [
+   0,
+   23
+  ]
+ },
+ "props": {
+  "blueprint": 0,
+  "dimmer": 1
+ }
+}
