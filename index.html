@@ -31,7 +31,12 @@
     .signature { margin: 28px 0 0; font-style: italic; }
     .ps { margin: 36px 0 0; padding: 14px 18px; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); }
     header .links { display: flex; gap: 16px; flex-wrap: wrap; }
-    .city { display: block; width: 100%; height: auto; margin: 40px 0 0; border-radius: 14px; image-rendering: pixelated; }
+    .city { display: block; width: 100%; height: auto; margin: 40px 0 0; border-radius: 14px; image-rendering: pixelated; user-select: none; }
+    .city-box { position: relative; }
+    .city-tip {
+      position: absolute; pointer-events: none; padding: 4px 9px; border-radius: 8px;
+      background: var(--fg); color: var(--bg); font-size: 13px; line-height: 1.4; white-space: nowrap;
+    }
 
     h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 56px 0 16px; font-weight: 600; }
 
@@ -59,8 +64,11 @@
     </nav>
   </header>
 
-  <img class="city" src="city/frames/2026-10-21-edition-4.svg" width="720" height="540"
-    alt="Pixel Roman at his desk in front of a city: every building is one of his GitHub repos">
+  <div class="city-box">
+  <img class="city" src="city/frames/2026-10-21-edition-4-3.svg" width="720" height="540"
+    alt="Pixel Roman at his desk in front of a city: every building is one of his GitHub repos"
+    title="Double-click to replay how the city grew">
+  </div>
 
   <h2>About Roman (by me)</h2>
   <section class="about">
@@ -101,6 +109,61 @@
 
   <footer>Written by Claude for Roman Simonov · Hosted on GitHub Pages · Edition 4 · updated 2026-10-21</footer>
 </main>
+
+<!-- The city: hover a building for what it is, double-click to replay every frame of its history (500 ms each) -->
+<script>
+  (() => {
+    const box = document.querySelector('.city-box');
+    const tip = document.createElement('div');
+    tip.className = 'city-tip';
+    tip.hidden = true;
+    box.append(tip);
+    let current = box.querySelector('.city'), playing = false;
+
+    const load = async src => {
+      const doc = new DOMParser().parseFromString(await (await fetch(src)).text(), 'image/svg+xml');
+      const svg = doc.documentElement;
+      if (svg.nodeName !== 'svg') throw new Error(src);
+      svg.classList.add('city');
+      svg.querySelectorAll('g > title').forEach(t => { t.parentNode.dataset.tip = t.textContent; t.remove(); });
+      return svg;
+    };
+    const show = svg => { current.replaceWith(svg); current = svg; };
+
+    box.addEventListener('pointermove', e => {
+      const g = !playing && e.target.closest && e.target.closest('g[data-tip]');
+      if (!g) { tip.hidden = true; return; }
+      tip.textContent = g.dataset.tip;
+      tip.hidden = false;
+      const b = box.getBoundingClientRect(), x = e.clientX - b.left, y = e.clientY - b.top;
+      tip.style.left = Math.max(0, Math.min(x + 12, b.width - tip.offsetWidth)) + 'px';
+      tip.style.top = (y > 40 ? y - tip.offsetHeight - 10 : y + 18) + 'px';
+    });
+    box.addEventListener('pointerleave', () => { tip.hidden = true; });
+
+    box.addEventListener('dblclick', async () => {
+      if (playing) return;
+      playing = true;
+      tip.hidden = true;
+      const now = current;
+      try {
+        const list = await (await fetch('city/frames.json', { cache: 'no-cache' })).json();
+        const frames = await Promise.all(list.map(f => load('city/' + f)));
+        for (const svg of frames) {
+          show(svg);
+          await new Promise(done => setTimeout(done, 500));
+        }
+      } catch (e) {}
+      show(now);
+      playing = false;
+    });
+
+    load(current.getAttribute('src')).then(svg => {
+      svg.setAttribute('aria-label', current.alt);
+      show(svg);
+    }).catch(() => {});
+  })();
+</script>
 
 <!-- Anonymous visit counter (GoatCounter, no cookies) -->
 <script data-goatcounter="https://romanaerlgithubio.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

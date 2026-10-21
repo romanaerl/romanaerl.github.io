@@ -4,12 +4,13 @@ Front row: repos shown in full (public, or private and allowed), each on a perma
 Back rows: other private repos as anonymous hazy silhouettes, each on a permanent lot.
 Skybridges = dependencies/submodules, thin wires = same name prefix, cranes = work since the last edition.
 
-usage: python3 draw.py editions/edition-3.json
+usage: python3 draw.py editions/edition-3.json    (python3 draw.py --index only rebuilds frames.json)
 Every frame ever drawn is kept: it goes to frames/<save date>-edition-<N>.svg, and a redraw on the same day
 gets -2, -3... instead of overwriting. The frames folder in date order is the cartoon. Prints the frame path.
+frames.json lists every frame in order (date, the sketch first, then edition and redraw) for the replay on the page.
 The snapshot gets the lots of new repos written back (front and back), so the next edition keeps them in place.
 """
-import datetime, json, math, os, sys
+import datetime, json, math, os, re, sys
 
 W, H, BASE = 240, 180, 129
 LANG = {'C++': ('#c8643a', '#a94f2b'), 'PHP': ('#8a7fc0', '#6f65a3'), 'HTML': ('#bdb5a8', '#9f978b'),
@@ -21,6 +22,21 @@ BACK_ROWS, BACK_LOTS = 2, 26
 BALLOONS = ['#e2574c', '#f2b134', '#4fa3d9', '#7cc36b', '#c070c8']
 
 groups = []
+PREV = {}                                                  # commits per repo id in the previous edition
+
+
+def commits(p):
+    return f"{p['commits']} commit" + ('' if p['commits'] == 1 else 's')
+
+
+def progress(p, edition):
+    """Tooltip tail: how the repo moved since the previous edition (no names, only counts)."""
+    if not PREV:
+        return ''
+    if p['id'] not in PREV:
+        return f' · new since edition {edition - 1}'
+    d = p['commits'] - PREV[p['id']]
+    return f' · +{d} since edition {edition - 1}' if d > 0 else ' · quiet lately'
 
 
 def group(title=None):
@@ -62,11 +78,11 @@ def scene(data):
             lots[p['id']] = next([row, k] for row in range(BACK_ROWS) for k in range(BACK_LOTS) if (row, k) not in taken)
     tops = {}
     for row in reversed(range(BACK_ROWS)):
-        group()
         for p in back:
             prow, k = lots[p['id']]
             if prow != row:
                 continue
+            group(f"Private repo · {commits(p)}" + progress(p, data['edition']))
             lg = math.log10(p['commits'] + 1)
             x, w, h = 3 + 9 * k + 4 * row, min(8, 5 + round(lg)), min(96, round(10 + 27 * lg)) + 6 * row
             old = p['pushed'] < '2026'
@@ -76,6 +92,7 @@ def scene(data):
             if p['pushed'] > since:                        # small crane: work since the last edition
                 r(x + 1, BASE - h - 8, 1, 8, '#b9a26a'); r(x - 1, BASE - h - 8, 8, 1, '#b9a26a')
             tops[p['id']] = (row, x, w, BASE - h)
+        group()
         for n, l in enumerate(data['links']):
             if l['a'] not in tops or l['b'] not in tops or tops[l['a']][0] != row or tops[l['b']][0] != row:
                 continue
@@ -104,7 +121,7 @@ def scene(data):
         w = 22 if h > 30 else 18
         x0, top = cx - w // 2, BASE - h
         body, shade = LANG.get(p['lang'], LANG[None])
-        group(f"{p['label']} · {p['commits']} commits")
+        group(f"{p['label']} · {commits(p)}" + progress(p, data['edition']))
         r(x0, top, w, h, body); r(x0 + w - 3, top, 3, h, shade); r(x0 - 1, top - 2, w + 2, 2, shade)
         k = 0
         for wy in range(top + 5, BASE - 9, 6):            # windows: stars light them up
@@ -213,9 +230,23 @@ def svg(title):
     return '\n'.join(out + ['</svg>']) + '\n'
 
 
+def write_index(frames):
+    def key(name):
+        m = re.match(r'(\d{4}-\d\d-\d\d)-(?:edition-(\d+)(?:-(\d+))?|sketch)\.svg$', name)
+        return (m[1], int(m[2] or 0), int(m[3] or 1)) if m else ('9999', 0, 0)
+    names = sorted((f for f in os.listdir(frames) if f.endswith('.svg')), key=key)
+    open(os.path.join(os.path.dirname(frames), 'frames.json'), 'w').write(
+        json.dumps(['frames/' + f for f in names], indent=1) + '\n')
+
+
 if __name__ == '__main__':
+    if sys.argv[1] == '--index':
+        sys.exit(write_index(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'frames')))
     snap_path = sys.argv[1]
     data = json.load(open(snap_path))
+    prev_path = os.path.join(os.path.dirname(os.path.abspath(snap_path)), f"edition-{data['edition'] - 1}.json")
+    if os.path.exists(prev_path):
+        PREV.update((p['id'], p['commits']) for p in json.load(open(prev_path))['repos'])
     scene(data)
     frames = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'frames')
     os.makedirs(frames, exist_ok=True)
@@ -226,4 +257,5 @@ if __name__ == '__main__':
         path = os.path.join(frames, f'{stem}-{n}.svg')
     open(path, 'w').write(svg(f"Roman's repo city, edition {data['edition']}"))
     open(snap_path, 'w').write(json.dumps(data, indent=1) + '\n')
+    write_index(frames)
     print(os.path.relpath(path, os.path.dirname(frames)))
