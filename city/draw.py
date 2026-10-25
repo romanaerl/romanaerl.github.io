@@ -213,9 +213,17 @@ def dimmer(x, y):
         r(x + 5 + dx, y - 12 + dy, 1, 1, '#f2b134')
 
 
+def batchbox(x, y):
+    for i, c in enumerate(['#f1efe6', '#ffd866', '#f1efe6', '#9fc1ea']):
+        r(x + 1 + 3 * i, y - 11 + (i % 2), 3, 5, c)
+    r(x, y - 8, 14, 8, '#a98a66'); r(x, y - 8, 14, 1, '#8c7152')
+    r(x + 5, y - 6, 4, 2, '#8c7152')
+
+
 PROPS = {
     'blueprint': ('The city plan: this picture grows with every edition', blueprint),
     'dimmer': ('Screen brightness: 70 out of 512, picked by eye', dimmer),
+    'batchbox': ('Small tweaks: collected in one box, shipped in one deploy', batchbox),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178)]
 

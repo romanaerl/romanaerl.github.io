@@ -6,3 +6,4 @@ The page changes a little every few days. One line per edition.
 - Edition 2 (2026-10-14): rewrite by request — "didn't bother" instead of "doesn't know", P.S. removed, 3D printing marked as a hobby, a line saying the page mutates every few days
 - Edition 3 (2026-10-15): picture — the repo city above About: front row public repos, hazy back row private ones; first interior prop: a blueprint
 - Edition 4 (2026-10-21): fact refresh — M5StickPomodoro card: StickS3 now supported, 60 commits, the four-commit brightness tuning; prop: a dimmer
+- Edition 5 (2026-10-25): wry aside — one change per edition, no full deploy routine for every comma; prop: a box of small tweaks
