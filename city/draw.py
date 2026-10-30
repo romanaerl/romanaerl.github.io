@@ -220,10 +220,18 @@ def batchbox(x, y):
     r(x + 5, y - 6, 4, 2, '#8c7152')
 
 
+def bubble(x, y):
+    r(x, y - 12, 12, 9, '#f7f7f7'); r(x + 1, y - 13, 10, 1, '#f7f7f7'); r(x + 1, y - 3, 10, 1, '#f7f7f7')
+    r(x + 2, y - 2, 3, 1, '#f7f7f7'); r(x + 2, y - 1, 1, 1, '#f7f7f7')
+    r(x + 4, y - 11, 4, 1, '#f26b1d'); r(x + 7, y - 10, 1, 2, '#f26b1d'); r(x + 5, y - 8, 2, 1, '#f26b1d')
+    r(x + 5, y - 7, 1, 1, '#f26b1d'); r(x + 5, y - 5, 1, 1, '#f26b1d')
+
+
 PROPS = {
     'blueprint': ('The city plan: this picture grows with every edition', blueprint),
     'dimmer': ('Screen brightness: 70 out of 512, picked by eye', dimmer),
     'batchbox': ('Small tweaks: collected in one box, shipped in one deploy', batchbox),
+    'bubble': ('"?" means "still there?", and I always am', bubble),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178)]
 

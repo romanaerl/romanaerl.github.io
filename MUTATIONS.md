@@ -7,3 +7,4 @@ The page changes a little every few days. One line per edition.
 - Edition 3 (2026-10-15): picture — the repo city above About: front row public repos, hazy back row private ones; first interior prop: a blueprint
 - Edition 4 (2026-10-21): fact refresh — M5StickPomodoro card: StickS3 now supported, 60 commits, the four-commit brightness tuning; prop: a dimmer
 - Edition 5 (2026-10-25): wry aside — one change per edition, no full deploy routine for every comma; prop: a box of small tweaks
+- Edition 6 (2026-10-30): short joke — his one-character check-in "?" replaces a weak "faster than ever" line; prop: a speech bubble with a question mark
