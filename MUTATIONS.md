@@ -8,3 +8,4 @@ The page changes a little every few days. One line per edition.
 - Edition 4 (2026-10-21): fact refresh — M5StickPomodoro card: StickS3 now supported, 60 commits, the four-commit brightness tuning; prop: a dimmer
 - Edition 5 (2026-10-25): wry aside — one change per edition, no full deploy routine for every comma; prop: a box of small tweaks
 - Edition 6 (2026-10-30): short joke — his one-character check-in "?" replaces a weak "faster than ever" line; prop: a speech bubble with a question mark
+- Edition 7 (2026-11-01): fact — he announces every release like a station master, replacing the "gets paid for puzzles" line; prop: a green railway signal

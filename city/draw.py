@@ -227,11 +227,20 @@ def bubble(x, y):
     r(x + 5, y - 7, 1, 1, '#f26b1d'); r(x + 5, y - 5, 1, 1, '#f26b1d')
 
 
+def signal(x, y):
+    r(x + 1, y - 1, 6, 1, '#2e2e33'); r(x + 3, y - 10, 2, 9, '#3b3b44')
+    r(x + 1, y - 17, 6, 8, '#2b2b30')
+    r(x + 3, y - 16, 2, 2, '#7a3a2a'); r(x + 3, y - 12, 2, 2, '#5fb04a')
+    for dx, dy in [(-1, 0), (2, 0), (0, -1), (1, 2)]:
+        r(x + 3 + dx, y - 12 + dy, 1, 1, '#9fe08a')
+
+
 PROPS = {
     'blueprint': ('The city plan: this picture grows with every edition', blueprint),
     'dimmer': ('Screen brightness: 70 out of 512, picked by eye', dimmer),
     'batchbox': ('Small tweaks: collected in one box, shipped in one deploy', batchbox),
     'bubble': ('"?" means "still there?", and I always am', bubble),
+    'signal': ('Green light: every release leaves the station on time', signal),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178)]
 
