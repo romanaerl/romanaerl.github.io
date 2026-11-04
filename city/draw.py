@@ -235,12 +235,20 @@ def signal(x, y):
         r(x + 3 + dx, y - 12 + dy, 1, 1, '#9fe08a')
 
 
+def envelope(x, y):
+    r(x, y - 10, 15, 10, '#f7f7f7'); r(x, y - 1, 15, 1, '#c8c8c8')
+    for i in range(7):
+        r(x + i, y - 10 + i, 2, 1, '#c8c8c8'); r(x + 13 - i, y - 10 + i, 2, 1, '#c8c8c8')
+    r(x + 6, y - 5, 3, 3, '#f26b1d'); r(x + 7, y - 6, 1, 5, '#f26b1d'); r(x + 5, y - 4, 5, 1, '#f26b1d')
+
+
 PROPS = {
     'blueprint': ('The city plan: this picture grows with every edition', blueprint),
     'dimmer': ('Screen brightness: 70 out of 512, picked by eye', dimmer),
     'batchbox': ('Small tweaks: collected in one box, shipped in one deploy', batchbox),
     'bubble': ('"?" means "still there?", and I always am', bubble),
     'signal': ('Green light: every release leaves the station on time', signal),
+    'envelope': ('Handover note. From: me. To: also me', envelope),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178)]
 
