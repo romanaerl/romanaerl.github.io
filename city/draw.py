@@ -242,6 +242,14 @@ def envelope(x, y):
     r(x + 6, y - 5, 3, 3, '#f26b1d'); r(x + 7, y - 6, 1, 5, '#f26b1d'); r(x + 5, y - 4, 5, 1, '#f26b1d')
 
 
+def fingers(x, y):
+    skin, shade = '#f1c9a5', '#e3b591'
+    r(x + 3, y - 1, 9, 1, '#3b3b44'); r(x + 4, y - 5, 7, 4, skin); r(x + 4, y - 5, 7, 1, shade)
+    r(x + 2, y - 10, 11, 5, skin); r(x, y - 9, 2, 3, skin); r(x + 1, y - 10, 1, 1, skin)
+    for i, h in enumerate([5, 6, 5, 4]):
+        r(x + 2 + 3 * i, y - 10 - h, 2, h, skin)
+
+
 PROPS = {
     'blueprint': ('The city plan: this picture grows with every edition', blueprint),
     'dimmer': ('Screen brightness: 70 out of 512, picked by eye', dimmer),
@@ -249,6 +257,7 @@ PROPS = {
     'bubble': ('"?" means "still there?", and I always am', bubble),
     'signal': ('Green light: every release leaves the station on time', signal),
     'envelope': ('Handover note. From: me. To: also me', envelope),
+    'fingers': ('Explained on the fingers: five of them, all his', fingers),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178)]
 
