@@ -37,6 +37,20 @@
       position: absolute; pointer-events: none; padding: 4px 9px; border-radius: 8px;
       background: var(--fg); color: var(--bg); font-size: 13px; line-height: 1.4; white-space: nowrap;
     }
+    .city-tip small { display: block; font-size: 11px; opacity: .65; }
+    .city g[data-story] { cursor: pointer; }
+    .city-card {
+      position: absolute; z-index: 1; width: min(330px, calc(100% - 16px)); padding: 12px 34px 12px 14px;
+      border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: var(--fg);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .18); font-size: 15px; line-height: 1.5;
+    }
+    .city-card b { display: block; font-size: 13px; margin: 0 0 4px; }
+    .city-card p { margin: 0; }
+    .city-card .since { color: var(--muted); font-size: 12px; margin: 8px 0 0; }
+    .city-card button {
+      position: absolute; top: 4px; right: 4px; padding: 4px 8px; border: 0; background: none;
+      color: var(--muted); font: inherit; font-size: 20px; line-height: 1; cursor: pointer;
+    }
 
     h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 56px 0 16px; font-weight: 600; }
 
@@ -65,7 +79,7 @@
   </header>
 
   <div class="city-box">
-  <img class="city" src="city/frames/2026-11-07-edition-9.svg" width="720" height="540"
+  <img class="city" src="city/frames/2026-11-10-edition-9.svg" width="720" height="540"
     alt="Pixel Roman at his desk in front of a city: every building is one of his GitHub repos"
     title="Double-click to replay how the city grew">
   </div>
@@ -113,15 +127,22 @@
   <footer>Written by Claude for Roman Simonov · Hosted on GitHub Pages · Edition 9 · updated 2026-11-07</footer>
 </main>
 
-<!-- The city: hover a building for what it is, double-click to replay every frame of its history (500 ms each) -->
+<!-- The city: hover a building for what it is, click a prop for its story, double-click to replay every frame
+     of its history (500 ms each) -->
 <script>
   (() => {
     const box = document.querySelector('.city-box');
     const tip = document.createElement('div');
     tip.className = 'city-tip';
     tip.hidden = true;
-    box.append(tip);
-    let current = box.querySelector('.city'), playing = false;
+    const card = document.createElement('div');
+    card.className = 'city-card';
+    card.hidden = true;
+    card.setAttribute('aria-live', 'polite');
+    card.innerHTML = '<button type="button" aria-label="Close">×</button><b></b><p></p><p class="since"></p>';
+    const [closeBtn, cardTitle, cardStory, cardSince] = card.children;
+    box.append(tip, card);
+    let current = box.querySelector('.city'), playing = false, opened = null;
 
     const load = async src => {
       const doc = new DOMParser().parseFromString(await (await fetch(src)).text(), 'image/svg+xml');
@@ -129,14 +150,17 @@
       if (svg.nodeName !== 'svg') throw new Error(src);
       svg.classList.add('city');
       svg.querySelectorAll('g > title').forEach(t => { t.parentNode.dataset.tip = t.textContent; t.remove(); });
+      svg.querySelectorAll('g > desc').forEach(d => { d.parentNode.dataset.story = d.textContent; d.remove(); });
       return svg;
     };
     const show = svg => { current.replaceWith(svg); current = svg; };
+    const close = () => { card.hidden = true; opened = null; };
 
     box.addEventListener('pointermove', e => {
       const g = !playing && e.target.closest && e.target.closest('g[data-tip]');
-      if (!g) { tip.hidden = true; return; }
+      if (!g || g === opened) { tip.hidden = true; return; }
       tip.textContent = g.dataset.tip;
+      if (g.dataset.story) tip.append(Object.assign(document.createElement('small'), { textContent: 'click for the story' }));
       tip.hidden = false;
       const b = box.getBoundingClientRect(), x = e.clientX - b.left, y = e.clientY - b.top;
       tip.style.left = Math.max(0, Math.min(x + 12, b.width - tip.offsetWidth)) + 'px';
@@ -144,8 +168,29 @@
     });
     box.addEventListener('pointerleave', () => { tip.hidden = true; });
 
-    box.addEventListener('dblclick', async () => {
-      if (playing) return;
+    // A click on a prop opens its story card above it; a click anywhere else, × or Escape closes it.
+    box.addEventListener('click', e => {
+      if (playing || e.detail > 1 || card.contains(e.target)) return;
+      const g = e.target.closest && e.target.closest('g[data-story]');
+      if (!g || g === opened) { close(); return; }
+      opened = g;
+      cardTitle.textContent = g.dataset.tip || '';
+      cardStory.textContent = g.dataset.story;
+      cardSince.textContent = g.dataset.since || '';
+      tip.hidden = true;
+      card.hidden = false;
+      const b = box.getBoundingClientRect(), p = g.getBoundingClientRect();
+      const x = p.left + p.width / 2 - b.left - card.offsetWidth / 2;
+      card.style.left = Math.max(8, Math.min(x, b.width - card.offsetWidth - 8)) + 'px';
+      card.style.top = Math.max(8, p.top - b.top - card.offsetHeight - 10) + 'px';
+    });
+    closeBtn.addEventListener('click', close);
+    document.addEventListener('click', e => { if (!box.contains(e.target)) close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+
+    box.addEventListener('dblclick', async e => {
+      if (playing || card.contains(e.target)) return;
+      close();
       playing = true;
       tip.hidden = true;
       const now = current;

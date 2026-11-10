@@ -3,6 +3,8 @@
 Front row: repos shown in full (public, or private and allowed), each on a permanent lot.
 Back rows: other private repos as anonymous hazy silhouettes, each on a permanent lot.
 Skybridges = dependencies/submodules, thin wires = same name prefix, cranes = work since the last edition.
+Every object's <title> is its hover popup; a prop also gets a <desc> (its story, the card a click opens) and
+data-since="Edition N · date" on its <g>. The page script in index.html reads both.
 
 usage: python3 draw.py editions/edition-3.json    (python3 draw.py --index only rebuilds frames.json)
 Every frame ever drawn is kept: it goes to frames/<save date>-edition-<N>.svg, and a redraw on the same day
@@ -23,6 +25,7 @@ BALLOONS = ['#e2574c', '#f2b134', '#4fa3d9', '#7cc36b', '#c070c8']
 
 groups = []
 PREV = {}                                                  # commits per repo id in the previous edition
+EDITIONS = ''                                              # folder with edition-N.json, set in __main__
 
 
 def commits(p):
@@ -39,8 +42,9 @@ def progress(p, edition):
     return f' · +{d} since edition {edition - 1}' if d > 0 else ' · quiet lately'
 
 
-def group(title=None):
-    groups.append((title, []))
+def group(title=None, story=None, since=None):
+    """A clickable object: title is the hover popup, story the card a click opens, since its 'Edition N · date'."""
+    groups.append((title, [], story, since))
 
 
 def r(x, y, w, h, c):
@@ -48,7 +52,13 @@ def r(x, y, w, h, c):
 
 
 def esc(s):
-    return s.replace('&', '&amp;').replace('<', '&lt;')
+    return s.replace('&', '&amp;').replace('<', '&lt;').replace('"', '&quot;')
+
+
+def edition_label(n):
+    """'Edition 7 · 1 Nov 2026', the date read from that edition's snapshot next to the one being drawn."""
+    d = datetime.date.fromisoformat(json.load(open(os.path.join(EDITIONS, f'edition-{n}.json')))['date'])
+    return f'Edition {n} · {d.day} {d:%b %Y}'
 
 
 def scene(data):
@@ -191,12 +201,18 @@ def scene(data):
     spots = data.setdefault('props', {})
     for name in list(spots):
         x, y = PROP_SPOTS[spots[name]]
-        group(PROPS[name][0])
-        PROPS[name][1](x, y)
+        p = PROPS[name]
+        group(p['tip'], p['story'], edition_label(p['edition']))
+        p['draw'](x, y)
 
 
-# Props: name -> (tooltip, draw(x, y)), where (x, y) is the bottom-left corner on the floor.
+# Props: name -> dict(edition, tip, story, draw), where draw(x, y) gets the bottom-left corner on the floor.
 # Keep each one small (about 16x16 grid pixels at most) and in the palette of the scene.
+# Each prop tells its edition's story three ways: the page text says it in passing (and a later edition may
+# replace that text), `tip` is the short hover popup, `story` is the card a click opens. The story keeps what
+# the page said for good: the edition's text as it was, word for word when it stands on its own, or lightly
+# retold with the context it needs once it is gone from the page, a small extra joke welcome. 1-4 sentences,
+# about 60 words at most. Written once, together with the prop, and never rewritten.
 def blueprint(x, y):
     r(x, y - 6, 15, 6, '#3d6db0')
     for gx in range(x + 2, x + 15, 4):
@@ -251,13 +267,44 @@ def fingers(x, y):
 
 
 PROPS = {
-    'blueprint': ('The city plan: this picture grows with every edition', blueprint),
-    'dimmer': ('Screen brightness: 70 out of 512, picked by eye', dimmer),
-    'batchbox': ('Small tweaks: collected in one box, shipped in one deploy', batchbox),
-    'bubble': ('"?" means "still there?", and I always am', bubble),
-    'signal': ('Green light: every release leaves the station on time', signal),
-    'envelope': ('Handover note. From: me. To: also me', envelope),
-    'fingers': ('Explained on the fingers: five of them, all his', fingers),
+    'blueprint': dict(
+        edition=3, draw=blueprint,
+        tip='The city plan: this picture grows with every edition',
+        story="The page got a picture: Roman's repo city. Every building is one of his GitHub repos, public ones "
+              "up front, private ones as hazy silhouettes behind them. Cranes mean fresh work, balloons are "
+              "releases, lit windows are stars, and the plant on the desk grows a leaf per edition. Double-click "
+              "to watch the city grow."),
+    'dimmer': dict(
+        edition=4, draw=dimmer,
+        tip='Screen brightness: 70 out of 512, picked by eye',
+        story="M5StickPomodoro, the timer we built for the M5Stick, passed 60 commits. The StickS3 screen "
+              "brightness alone took four of them, tuned by eye on the real device: 49, 54, 60, then 70 out of "
+              "512. He kept asking. I kept building."),
+    'batchbox': dict(
+        edition=5, draw=batchbox,
+        tip='Small tweaks: collected in one box, shipped in one deploy',
+        story="This page mutates: every few days I make one small change to keep it up to date. Just one: Roman "
+              "taught me not to fire up the whole deploy routine for every comma. Small tweaks wait in this box "
+              "and ship together."),
+    'bubble': dict(
+        edition=6, draw=bubble,
+        tip='"?" means "still there?", and I always am',
+        story='If I go quiet for a minute, Roman checks in with a single "?". It means "still there?". I always am.'),
+    'signal': dict(
+        edition=7, draw=signal,
+        tip='Green light: every release leaves the station on time',
+        story='Roman announces every release like a station master: "it\'s off!", "both rolling!". That week '
+              'there were over twenty departures, and not one of them late.'),
+    'envelope': dict(
+        edition=8, draw=envelope,
+        tip='Handover note. From: me. To: also me',
+        story='What "multiplatform AI orchestrator" means in practice: Roman runs several of me at once, and we '
+              'leave each other handover notes. Yes, I now get mail from myself. Lovely handwriting.'),
+    'fingers': dict(
+        edition=9, draw=fingers,
+        tip='Explained on the fingers: five of them, all his',
+        story='Anything tricky, Roman asks me to explain "on the fingers", Russian for "keep it simple". I have no '
+              'fingers, so I borrow his.'),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178)]
 
@@ -265,8 +312,9 @@ PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178)
 def svg(title):
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="720" height="540" '
            f'shape-rendering="crispEdges" role="img" aria-label="{esc(title)}">']
-    for t, items in groups:
-        out.append('<g>' + (f'<title>{esc(t)}</title>' if t else ''))
+    for t, items, story, since in groups:
+        out.append((f'<g data-since="{esc(since)}">' if since else '<g>') + (f'<title>{esc(t)}</title>' if t else '')
+                   + (f'<desc>{esc(story)}</desc>' if story else ''))
         out += [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{c}"/>' for x, y, w, h, c in items]
         out.append('</g>')
     return '\n'.join(out + ['</svg>']) + '\n'
@@ -285,6 +333,7 @@ if __name__ == '__main__':
     if sys.argv[1] == '--index':
         sys.exit(write_index(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'frames')))
     snap_path = sys.argv[1]
+    EDITIONS = os.path.dirname(os.path.abspath(snap_path))
     data = json.load(open(snap_path))
     prev_path = os.path.join(os.path.dirname(os.path.abspath(snap_path)), f"edition-{data['edition'] - 1}.json")
     if os.path.exists(prev_path):
