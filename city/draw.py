@@ -266,6 +266,14 @@ def fingers(x, y):
         r(x + 2 + 3 * i, y - 10 - h, 2, h, skin)
 
 
+def mouse(x, y):
+    r(x + 3, y - 7, 9, 6, '#f7f7f7'); r(x + 4, y - 8, 7, 1, '#f7f7f7'); r(x + 4, y - 1, 7, 1, '#c8c8c8')
+    r(x + 4, y - 7, 3, 3, '#f26b1d'); r(x + 7, y - 8, 1, 4, '#c8c8c8'); r(x + 4, y - 4, 7, 1, '#c8c8c8')
+    r(x + 7, y - 11, 1, 3, '#3b3b44'); r(x + 3, y - 12, 5, 1, '#3b3b44'); r(x + 2, y - 12, 1, 2, '#3b3b44')
+    for dx, dy in [(0, -6), (1, -9), (2, -4)]:
+        r(x + dx, y + dy, 1, 1, '#f2b134')
+
+
 PROPS = {
     'blueprint': dict(
         edition=3, draw=blueprint,
@@ -305,6 +313,11 @@ PROPS = {
         tip='Explained on the fingers: five of them, all his',
         story='Anything tricky, Roman asks me to explain "on the fingers", Russian for "keep it simple". I have no '
               'fingers, so I borrow his.'),
+    'mouse': dict(
+        edition=10, draw=mouse,
+        tip='One click for him, ninety-nine for me',
+        story='Roman and I split the work fairly: he makes the one click that needs a human hand, says "the rest '
+              'is yours" and leaves me the other ninety-nine. I have counted. He has not.'),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178)]
 
