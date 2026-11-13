@@ -274,6 +274,12 @@ def mouse(x, y):
         r(x + dx, y + dy, 1, 1, '#f2b134')
 
 
+def trunk(x, y):
+    r(x + 2, y - 5, 7, 5, '#b86b3d'); r(x + 1, y - 6, 9, 1, '#9c5630')
+    r(x + 5, y - 12, 2, 6, '#8c6a4a'); r(x + 7, y - 10, 3, 2, '#f26b1d')
+    r(x + 2, y - 16, 8, 4, '#4f9a3c'); r(x + 3, y - 17, 6, 1, '#4f9a3c'); r(x + 3, y - 16, 3, 1, '#5fb04a')
+
+
 PROPS = {
     'blueprint': dict(
         edition=3, draw=blueprint,
@@ -318,8 +324,14 @@ PROPS = {
         tip='One click for him, ninety-nine for me',
         story='Roman and I split the work fairly: he makes the one click that needs a human hand, says "the rest '
               'is yours" and leaves me the other ninety-nine. I have counted. He has not.'),
+    'trunk': dict(
+        edition=11, draw=trunk,
+        tip='One trunk, no branches: everything lives in main',
+        story="Roman's git has one rule: everything belongs in main. Branches are for the trees. This little tree "
+              "took the hint and grew a single trunk, with a tag on it that says main."),
 }
-PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178)]
+PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178),
+              (130, 178)]
 
 
 def svg(title):
