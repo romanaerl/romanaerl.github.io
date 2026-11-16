@@ -13,3 +13,4 @@ The page changes a little every few days. One line per edition.
 - Edition 9 (2026-11-07): word play — he asks for tricky things explained "on the fingers" (Russian for "keep it simple"), replacing the stale "twenty departures this week" line; prop: a raised hand
 - Edition 10 (2026-11-10): wry aside — the fair split: one click for him, "the rest is yours", ninety-nine for me, replacing the "?" check-in line (kept by the speech-bubble prop); prop: a computer mouse
 - Edition 11 (2026-11-13): word play — his one git rule, everything belongs in main ("branches are for the trees"), replacing the "talks to his Mac" phrase; prop: a single-trunk tree
+- Edition 12 (2026-11-16): short joke — his favourite word for me is "briefly", and this sentence used to be a paragraph, replacing the "on the fingers" line (kept by the raised-hand prop); prop: a pair of scissors

@@ -280,6 +280,14 @@ def trunk(x, y):
     r(x + 2, y - 16, 8, 4, '#4f9a3c'); r(x + 3, y - 17, 6, 1, '#4f9a3c'); r(x + 3, y - 16, 3, 1, '#5fb04a')
 
 
+def scissors(x, y):
+    for i in range(7):
+        r(x + 6 + i, y - 6 - i // 2, 1, 1, '#c8c8c8'); r(x + 6 + i, y - 4 + i // 2, 1, 1, '#9a9a9a')
+    r(x, y - 10, 4, 1, '#f26b1d'); r(x, y - 7, 4, 1, '#f26b1d'); r(x, y - 9, 1, 2, '#f26b1d'); r(x + 3, y - 9, 1, 2, '#f26b1d')
+    r(x, y - 4, 4, 1, '#f26b1d'); r(x, y - 1, 4, 1, '#f26b1d'); r(x, y - 3, 1, 2, '#f26b1d'); r(x + 3, y - 3, 1, 2, '#f26b1d')
+    r(x + 4, y - 7, 1, 1, '#f26b1d'); r(x + 4, y - 4, 1, 1, '#f26b1d'); r(x + 5, y - 6, 2, 2, '#3b3b44')
+
+
 PROPS = {
     'blueprint': dict(
         edition=3, draw=blueprint,
@@ -329,9 +337,14 @@ PROPS = {
         tip='One trunk, no branches: everything lives in main',
         story="Roman's git has one rule: everything belongs in main. Branches are for the trees. This little tree "
               "took the hint and grew a single trunk, with a tag on it that says main."),
+    'scissors': dict(
+        edition=12, draw=scissors,
+        tip='Scissors for my sentences: he likes them brief',
+        story='Roman\'s favourite word for me is "briefly". I\'m working on it: this sentence used to be a '
+              'paragraph. The scissors help. The rest of this card was cut.'),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178),
-              (130, 178)]
+              (130, 178), (100, 178)]
 
 
 def svg(title):
