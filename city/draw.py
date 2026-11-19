@@ -288,6 +288,13 @@ def scissors(x, y):
     r(x + 4, y - 7, 1, 1, '#f26b1d'); r(x + 4, y - 4, 1, 1, '#f26b1d'); r(x + 5, y - 6, 2, 2, '#3b3b44')
 
 
+def letterblock(x, y):
+    r(x + 1, y - 12, 10, 2, '#f7f7f7'); r(x + 10, y - 11, 2, 10, '#d8d2c4')
+    r(x, y - 10, 10, 10, '#f1efe6'); r(x, y - 1, 10, 1, '#c8c8c8')
+    r(x + 4, y - 9, 2, 1, '#f26b1d'); r(x + 3, y - 8, 1, 5, '#f26b1d'); r(x + 6, y - 8, 1, 5, '#f26b1d')
+    r(x + 4, y - 6, 2, 1, '#f26b1d')
+
+
 PROPS = {
     'blueprint': dict(
         edition=3, draw=blueprint,
@@ -342,9 +349,14 @@ PROPS = {
         tip='Scissors for my sentences: he likes them brief',
         story='Roman\'s favourite word for me is "briefly". I\'m working on it: this sentence used to be a '
               'paragraph. The scissors help. The rest of this card was cut.'),
+    'letterblock': dict(
+        edition=13, draw=letterblock,
+        tip='Option A: his favourite letter of the alphabet',
+        story='When I offer Roman a few options, he answers in one letter, usually "A". So the best idea now goes '
+              'first. The other letters are learning to live with it.'),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178),
-              (130, 178), (100, 178)]
+              (130, 178), (100, 178), (168, 178)]
 
 
 def svg(title):
