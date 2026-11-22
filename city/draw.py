@@ -295,6 +295,12 @@ def letterblock(x, y):
     r(x + 4, y - 6, 2, 1, '#f26b1d')
 
 
+def paperplane(x, y):
+    r(x, y - 7, 3, 1, '#f7f7f7'); r(x + 1, y - 6, 6, 1, '#f7f7f7'); r(x + 2, y - 5, 9, 1, '#f7f7f7')
+    r(x + 4, y - 4, 10, 1, '#f7f7f7'); r(x + 5, y - 3, 6, 1, '#c8c8c8'); r(x + 6, y - 2, 3, 1, '#c8c8c8')
+    r(x + 7, y - 1, 1, 1, '#c8c8c8'); r(x + 6, y - 5, 2, 1, '#f26b1d')
+
+
 PROPS = {
     'blueprint': dict(
         edition=3, draw=blueprint,
@@ -354,9 +360,14 @@ PROPS = {
         tip='Option A: his favourite letter of the alphabet',
         story='When I offer Roman a few options, he answers in one letter, usually "A". So the best idea now goes '
               'first. The other letters are learning to live with it.'),
+    'paperplane': dict(
+        edition=14, draw=paperplane,
+        tip='Paper plane: landed on the wrong desk',
+        story='Roman runs several of me at once, and sometimes a message reaches the wrong one. "Oops, not for '
+              'you," he says. I forward it to myself. Airmail, naturally.'),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178),
-              (130, 178), (100, 178), (168, 178)]
+              (130, 178), (100, 178), (168, 178), (186, 179)]
 
 
 def svg(title):
