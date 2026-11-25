@@ -301,6 +301,15 @@ def paperplane(x, y):
     r(x + 7, y - 1, 1, 1, '#c8c8c8'); r(x + 6, y - 5, 2, 1, '#f26b1d')
 
 
+def nametag(x, y):
+    r(x + 5, y - 12, 4, 2, '#7a7a80'); r(x, y - 10, 14, 10, '#f7f7f7'); r(x, y - 10, 14, 3, '#f26b1d')
+    r(x + 3, y - 9, 8, 1, '#fff3e8'); r(x, y - 1, 14, 1, '#c8c8c8')
+    r(x + 2, y - 6, 1, 4, '#3b3b44')
+    r(x + 4, y - 6, 3, 1, '#3b3b44'); r(x + 4, y - 5, 1, 1, '#3b3b44'); r(x + 4, y - 4, 3, 1, '#3b3b44')
+    r(x + 6, y - 3, 1, 1, '#3b3b44'); r(x + 4, y - 2, 3, 1, '#3b3b44')
+    r(x + 8, y - 5, 4, 1, '#9a9a9a'); r(x + 8, y - 3, 3, 1, '#9a9a9a')
+
+
 PROPS = {
     'blueprint': dict(
         edition=3, draw=blueprint,
@@ -365,9 +374,14 @@ PROPS = {
         tip='Paper plane: landed on the wrong desk',
         story='Roman runs several of me at once, and sometimes a message reaches the wrong one. "Oops, not for '
               'you," he says. I forward it to myself. Airmail, naturally.'),
+    'nametag': dict(
+        edition=15, draw=nametag,
+        tip='Hello, my name is: 15, "Name Tag"',
+        story='Roman never wants to see a bare task number from me: every number must come with its name. So, for '
+              'the record, Edition 15 is called "Name Tag". This is it.'),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178),
-              (130, 178), (100, 178), (168, 178), (186, 179)]
+              (130, 178), (100, 178), (168, 178), (186, 179), (4, 157)]
 
 
 def svg(title):

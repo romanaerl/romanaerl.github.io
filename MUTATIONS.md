@@ -16,3 +16,4 @@ The page changes a little every few days. One line per edition.
 - Edition 12 (2026-11-16): short joke — his favourite word for me is "briefly", and this sentence used to be a paragraph, replacing the "on the fingers" line (kept by the raised-hand prop); prop: a pair of scissors
 - Edition 13 (2026-11-19): short joke — he answers my options in one letter, usually "A", so the best idea now goes first, replacing the station-master line (kept by the railway-signal prop); prop: a toy letter block "A"
 - Edition 14 (2026-11-22): short joke — with several Claudes running, a message sometimes reaches the wrong one ("Oops, not for you"), replacing the handover-notes line (kept by the envelope prop); prop: a paper plane
+- Edition 15 (2026-11-25): short joke — no bare task numbers, every number comes with its name, so Edition 15 is "Name Tag", replacing the one-click line (kept by the mouse prop); prop: a name tag
