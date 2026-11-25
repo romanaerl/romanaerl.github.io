@@ -1,15 +1,18 @@
 """Snapshot of romanaerl's GitHub for the city picture (needs a logged-in `gh`).
 
-Repos are identified by their numeric GitHub ID: it survives renames and says nothing about the name.
-A real name is kept only for repos shown in full: public ones and private ones listed in
-allow-private.txt. Other private repos keep only numbers: commits, dates, links.
+The city holds Roman's own repos and the repos of his organizations (ORGS). Repos are identified by their
+numeric GitHub ID: it survives renames and transfers (a repo moved into an org keeps its lot) and says
+nothing about the name. A real name and owner are kept only for repos shown in full: public ones and
+private ones listed in allow-private.txt. Other private repos keep only numbers: commits, dates, links.
 
 usage: python3 snapshot.py --edition 3 --date 2026-10-20 --prev editions/edition-2.json --out editions/edition-3.json
 """
 import argparse, base64, json, os, re, subprocess
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OWNER = 'romanaerl'
+USER = 'romanaerl'
+ORGS = ['Open3DPC']
+OWNERS = [USER] + ORGS
 MANIFESTS = ['.gitmodules', 'package.json', 'composer.json', 'requirements.txt', 'pyproject.toml', 'go.mod',
              'Cargo.toml', 'platformio.ini', 'Gemfile', 'Podfile', 'Package.swift', 'build.gradle', 'pubspec.yaml']
 
@@ -44,6 +47,25 @@ def allowed_private():
     return {l.lower() for l in lines if l and not l.startswith('#')}
 
 
+def listing(path):
+    raw = subprocess.run(['gh', 'api', '--paginate', path, '--jq', '.[]'],
+                         capture_output=True, text=True, check=True).stdout
+    return [json.loads(l) for l in raw.splitlines() if l.strip()]
+
+
+def all_repos():
+    """Roman's own repos plus every repo of his orgs (private ones stay hidden like his own), by ID."""
+    found = {r['id']: r for r in listing('user/repos?affiliation=owner&per_page=100')}
+    for org in ORGS:
+        found.update((r['id'], r) for r in listing(f'orgs/{org}/repos?type=all&per_page=100'))
+    return sorted(found.values(), key=lambda r: r['created_at'])
+
+
+def is_allowed(r, allow):
+    """allow-private.txt names a repo by its name or by owner/name."""
+    return r['name'].lower() in allow or r['full_name'].lower() in allow
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--edition', type=int, required=True)
@@ -54,37 +76,48 @@ def main():
     args = ap.parse_args()
     prev = json.load(open(args.prev)) if args.prev else {}
 
-    raw = subprocess.run(['gh', 'api', '--paginate', 'user/repos?affiliation=owner&per_page=100', '--jq', '.[]'],
-                         capture_output=True, text=True, check=True).stdout
-    repos = sorted((json.loads(l) for l in raw.splitlines() if l.strip()), key=lambda r: r['created_at'])
+    repos = all_repos()
     allow = allowed_private()
-    by_name = {r['name'].lower(): r for r in repos}
+    by_full = {r['full_name'].lower(): r for r in repos}
+    by_name = {}
+    for r in repos:
+        by_name.setdefault(r['name'].lower(), []).append(r)
 
+    def resolve(owner, ref):
+        """owner/ref from a manifest -> our repo; an old owner/ref of a repo moved into an org still finds it."""
+        hit = by_full.get(f'{owner}/{ref}'.lower())
+        same = by_name.get(ref.lower(), [])
+        return hit or (same[0] if len(same) == 1 else None)
+
+    ref_re = re.compile(r'\b(' + '|'.join(OWNERS) + r')/([A-Za-z0-9._-]+?)(?:\.git)?(?=[\s"\'#@/]|$)', re.M | re.I)
     out_repos, links = [], set()
     for r in repos:
         full, name = r['full_name'], r['name']
-        shown = not r['private'] or name.lower() in allow
+        shown = not r['private'] or is_allowed(r, allow)
         rec = {'id': str(r['id']), 'shown': shown, 'fork': r['fork'], 'archived': r['archived'],
                'created': r['created_at'][:10], 'pushed': r['pushed_at'][:10],
                'commits': 0 if r['fork'] else count(f'repos/{full}/commits')}
         if shown:
-            rec.update(label=name, lang=r['language'], stars=r['stargazers_count'],
+            rec.update(label=name, owner=r['owner']['login'], lang=r['language'], stars=r['stargazers_count'],
                        releases=count(f'repos/{full}/releases'))
         out_repos.append(rec)
         if r['fork']:
             continue
-        # dependency links: submodules and manifests that point at another romanaerl repo
+        # dependency links: submodules and manifests that point at another repo of Roman or his orgs
         text = '\n'.join(file_text(full, m) for m in MANIFESTS)
-        for ref in re.findall(OWNER + r'/([A-Za-z0-9._-]+?)(?:\.git)?(?=[\s"\'#@/]|$)', text, re.M):
-            if ref.lower() in by_name and ref.lower() != name.lower():
-                links.add((*sorted([str(r['id']), str(by_name[ref.lower()]['id'])]), 'dep'))
+        for owner, ref in ref_re.findall(text):
+            other = resolve(owner, ref)
+            if other and other['id'] != r['id']:
+                links.add((*sorted([str(r['id']), str(other['id'])]), 'dep'))
 
-    # family links: same name prefix before the first '-' (4+ letters), chained in creation order
+    # family links: same name prefix before the first '-' (4+ letters), chained in creation order. Shown and
+    # hidden repos are chained apart: a wire from a named repo to a hidden one would give away how the hidden
+    # one's name starts.
     families = {}
-    for r in repos:
+    for r, rec in zip(repos, out_repos):
         head = r['name'].lower().split('-')[0]
         if len(head) >= 4 and not r['fork']:
-            families.setdefault(head, []).append(str(r['id']))
+            families.setdefault((head, rec['shown']), []).append(str(r['id']))
     for members in families.values():
         for a, b in zip(members, members[1:]):
             links.add((*sorted([a, b]), 'family'))
@@ -96,7 +129,7 @@ def main():
     text = json.dumps(snap, indent=1)
     # self-check: no hidden private name may end up in the file
     for r in repos:
-        if r['private'] and r['name'].lower() not in allow:
+        if r['private'] and not is_allowed(r, allow):
             assert r['name'].lower() not in text.lower(), 'a private name leaked into the snapshot'
     open(args.out, 'w').write(text + '\n')
 

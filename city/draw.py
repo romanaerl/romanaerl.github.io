@@ -1,7 +1,12 @@
 """Draws the "repo city": a 240x180 pixel scene (shown at 720x540) from one snapshot made by snapshot.py.
 
-Front row: repos shown in full (public, or private and allowed), each on a permanent lot.
+Front row: repos shown in full (public, or private and allowed), each on a permanent lot. A repo of one of
+Roman's organizations reads "Org/name" and flies a small pennant on its roof; Open3DPC's main repo, its
+headquarters, gets the Open3DPC logo as a rooftop sign instead (as M5StickPomodoro gets its tomato).
 Back rows: other private repos as anonymous hazy silhouettes, each on a permanent lot.
+A new front building, also a private repo that went public and steps forward, takes the free front lot where
+it hides the least fresh back-row work (repos pushed in the last half year; LOTS order breaks ties). A repo
+that stepped forward keeps its back lot too, empty, and its popup says it stepped out of the back row.
 Skybridges = dependencies/submodules, thin wires = same name prefix, cranes = work since the last edition.
 Every object's <title> is its hover popup; a prop also gets a <desc> (its story, the card a click opens) and
 data-since="Edition N · date" on its <g>. The page script in index.html reads both.
@@ -22,9 +27,10 @@ LOTS = [56, 184, 24, 216, 88, 152, 120]
 FORK_LOTS = [6, 234, 40, 200]
 BACK_ROWS, BACK_LOTS = 2, 26
 BALLOONS = ['#e2574c', '#f2b134', '#4fa3d9', '#7cc36b', '#c070c8']
+USER = 'romanaerl'                                         # any other owner is one of his organizations
 
 groups = []
-PREV = {}                                                  # commits per repo id in the previous edition
+PREV = {}                                                  # repo id -> (commits, shown) in the previous edition
 EDITIONS = ''                                              # folder with edition-N.json, set in __main__
 
 
@@ -38,8 +44,55 @@ def progress(p, edition):
         return ''
     if p['id'] not in PREV:
         return f' · new since edition {edition - 1}'
-    d = p['commits'] - PREV[p['id']]
+    before, was_shown = PREV[p['id']]
+    if p['shown'] and not was_shown:
+        return f' · stepped out of the back row since edition {edition - 1}'
+    d = p['commits'] - before
     return f' · +{d} since edition {edition - 1}' if d > 0 else ' · quiet lately'
+
+
+def back_x(row, k):
+    """Left edge of back lot k in back row `row`."""
+    return 3 + 9 * k + 4 * row
+
+
+def back_w(p):
+    return min(8, 5 + round(math.log10(p['commits'] + 1)))
+
+
+def front_size(p):
+    """(width, height) of a front-row building."""
+    h = min(100, round(10 + 22 * math.log10(p['commits'] + 1)))
+    return (22 if h > 30 else 18), h
+
+
+# The Open3DPC logo mark, pixel for pixel: white on a coral tile with rounded corners.
+OPEN3DPC_MARK = ['############', '###        #', '###        #', '#          #', '#          #', '#          #',
+                 '#       ## #', '#       ## #', '#     #### #', '#     #### #', '#          #', '############']
+
+
+def hq_sign(cx, top):
+    """Open3DPC headquarters: its 16x16 logo tile as a sign on two legs above the roof."""
+    x, y = cx - 8, top - 20
+    r(x + 3, top - 4, 1, 2, '#6b6b70'); r(x + 12, top - 4, 1, 2, '#6b6b70')
+    for dy, a in enumerate([2, 1] + [0] * 12 + [1, 2]):
+        r(x + a, y + dy, 16 - 2 * a, 1, '#ff5a3c')
+    for dy, line in enumerate(OPEN3DPC_MARK):
+        for m in re.finditer('#+', line):
+            r(x + 2 + m.start(), y + 2 + dy, m.end() - m.start(), 1, '#ffffff')
+
+
+def fresh_hidden(cx, w, data):
+    """How many back-row repos pushed in the last half year a front building w wide at lot cx would stand in front of."""
+    cutoff = (datetime.date.fromisoformat(data['date']) - datetime.timedelta(days=182)).isoformat()
+    by_id = {p['id']: p for p in data['repos']}
+    n = 0
+    for i, (row, k) in data['back_lots'].items():
+        p = by_id.get(i)
+        if p and not p['shown'] and not p['fork'] and p['pushed'] >= cutoff:
+            x = back_x(row, k)
+            n += x <= cx - w // 2 + w - 1 and x + back_w(p) - 1 >= cx - w // 2
+    return n
 
 
 def group(title=None, story=None, since=None):
@@ -78,8 +131,8 @@ def scene(data):
 
     # ---------- back rows: hidden private repos on permanent lots ----------
     # Each repo gets a 9px lot the first time it appears (oldest first) and keeps it forever: the building only
-    # grows up (and a little wider inside its lot). Deleted repos leave their lot empty. Row 0 is the near
-    # row; when it is full, new repos go to the far row behind it.
+    # grows up (and a little wider inside its lot). Deleted repos, and repos that stepped forward into the front
+    # row, leave their lot empty. Row 0 is the near row; when it is full, new repos go to the far row behind it.
     back = [p for p in repos if not p['shown'] and not p['fork']]
     lots = data.setdefault('back_lots', {})
     for p in back:
@@ -94,7 +147,7 @@ def scene(data):
                 continue
             group(f"Private repo · {commits(p)}" + progress(p, data['edition']))
             lg = math.log10(p['commits'] + 1)
-            x, w, h = 3 + 9 * k + 4 * row, min(8, 5 + round(lg)), min(96, round(10 + 27 * lg)) + 6 * row
+            x, w, h = back_x(row, k), back_w(p), min(96, round(10 + 27 * lg)) + 6 * row
             old = p['pushed'] < '2026'
             body, side = [(('#bccad6', '#b0bfcc'), ('#a7b6c5', '#97a8b9')),
                           (('#cfd9e2', '#c6d1db'), ('#bfcbd6', '#b3c0cc'))][row][0 if old else 1]
@@ -124,14 +177,16 @@ def scene(data):
             free = [s for s in LOTS if s not in lots.values()]
             if not free:
                 sys.exit('front row is full: add more LOTS')
-            lots[p['id']] = free[0]
+            w = front_size(p)[0]                           # stand where it hides the least fresh work
+            lots[p['id']] = min(free, key=lambda s: (fresh_hidden(s, w, data), LOTS.index(s)))
     for p in front:
         cx = lots[p['id']]
-        h = min(100, round(10 + 22 * math.log10(p['commits'] + 1)))
-        w = 22 if h > 30 else 18
+        w, h = front_size(p)
         x0, top = cx - w // 2, BASE - h
         body, shade = LANG.get(p['lang'], LANG[None])
-        group(f"{p['label']} · {commits(p)}" + progress(p, data['edition']))
+        owner = p.get('owner', USER)
+        name = p['label'] if owner == USER else f"{owner}/{p['label']}"
+        group(f"{name} · {commits(p)}" + progress(p, data['edition']))
         r(x0, top, w, h, body); r(x0 + w - 3, top, 3, h, shade); r(x0 - 1, top - 2, w + 2, 2, shade)
         k = 0
         for wy in range(top + 5, BASE - 9, 6):            # windows: stars light them up
@@ -145,16 +200,23 @@ def scene(data):
             r(cx - 5, top + 2, 10, 2, '#f4f1ea'); r(cx - 5, top + 2, 6, 2, '#e0453a')
         if p['label'] == 'romanaerl.github.io':            # this page: antenna with an orange tip
             r(cx, top - 10, 1, 8, '#6b6b70'); r(cx - 1, top - 12, 3, 2, '#f26b1d')
+        hq = p['label'] == 'open3dpc'                      # Open3DPC headquarters: its logo up on the roof
+        if owner != USER and not hq:                       # an organization's repo: a pennant on the roof
+            fx = x0 + w - 4
+            r(fx, top - 10, 1, 8, '#6b6b70')
+            r(fx + 1, top - 10, 4, 1, '#4fa3d9'); r(fx + 1, top - 9, 3, 1, '#4fa3d9'); r(fx + 1, top - 8, 1, 1, '#4fa3d9')
         if p['archived']:                                  # ivy
             for iy in range(top + 2, BASE, 4):
                 r(x0, iy, 2, 2, '#4f9a3c')
-        if p['pushed'] > since:                            # crane
+        if p['pushed'] > since:                            # crane (behind the HQ sign)
             mx = x0 + 2
             r(mx, top - 14, 1, 12, '#d79a1e'); r(mx - 3, top - 14, 14, 1, '#d79a1e')
             r(mx + 9, top - 13, 1, 4, '#555'); r(mx + 8, top - 9, 3, 1, '#555')
+        if hq:
+            hq_sign(cx, top)
         for b in range(min(p['releases'], 5)):             # balloons = releases
             bx = cx - 9 + b * 5 + (b % 2)
-            by = top - 26 - (b % 2) * 5 - (6 if p['label'] == 'M5StickPomodoro' else 0)
+            by = top - 26 - (b % 2) * 5 - (6 if p['label'] == 'M5StickPomodoro' or hq else 0)
             c = BALLOONS[b]
             r(bx, by, 3, 1, c); r(bx - 1, by + 1, 5, 3, c); r(bx, by + 4, 3, 1, c); r(bx + 1, by + 5, 1, 6, '#8a8a8a')
 
@@ -412,7 +474,7 @@ if __name__ == '__main__':
     data = json.load(open(snap_path))
     prev_path = os.path.join(os.path.dirname(os.path.abspath(snap_path)), f"edition-{data['edition'] - 1}.json")
     if os.path.exists(prev_path):
-        PREV.update((p['id'], p['commits']) for p in json.load(open(prev_path))['repos'])
+        PREV.update((p['id'], (p['commits'], p['shown'])) for p in json.load(open(prev_path))['repos'])
     scene(data)
     frames = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'frames')
     os.makedirs(frames, exist_ok=True)
