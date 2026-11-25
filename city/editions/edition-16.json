@@ -1,6 +1,7 @@
 {
  "edition": 16,
  "date": "2026-11-25",
+ "taken": "2026-11-25T23:53:00Z",
  "prev_date": "2026-11-25",
  "repos": [
   {
@@ -10,7 +11,8 @@
    "archived": false,
    "created": "2013-05-11",
    "pushed": "2014-01-24",
-   "commits": 134
+   "commits": 134,
+   "fresh": false
   },
   {
    "id": "16644718",
@@ -19,7 +21,8 @@
    "archived": false,
    "created": "2014-02-08",
    "pushed": "2014-09-25",
-   "commits": 7
+   "commits": 7,
+   "fresh": false
   },
   {
    "id": "26972274",
@@ -28,7 +31,8 @@
    "archived": false,
    "created": "2014-11-21",
    "pushed": "2015-04-22",
-   "commits": 21
+   "commits": 21,
+   "fresh": false
   },
   {
    "id": "37485234",
@@ -37,7 +41,8 @@
    "archived": false,
    "created": "2015-06-15",
    "pushed": "2016-08-21",
-   "commits": 9
+   "commits": 9,
+   "fresh": false
   },
   {
    "id": "162127068",
@@ -46,7 +51,8 @@
    "archived": false,
    "created": "2018-12-17",
    "pushed": "2019-01-09",
-   "commits": 5
+   "commits": 5,
+   "fresh": false
   },
   {
    "id": "162127377",
@@ -55,7 +61,8 @@
    "archived": false,
    "created": "2018-12-17",
    "pushed": "2019-01-09",
-   "commits": 3
+   "commits": 3,
+   "fresh": false
   },
   {
    "id": "223177250",
@@ -65,6 +72,7 @@
    "created": "2019-11-21",
    "pushed": "2019-10-06",
    "commits": 0,
+   "fresh": false,
    "label": "libremarkable",
    "owner": "romanaerl",
    "lang": null,
@@ -79,6 +87,7 @@
    "created": "2019-11-21",
    "pushed": "2018-10-12",
    "commits": 0,
+   "fresh": false,
    "label": "ReMarkableAPI",
    "owner": "romanaerl",
    "lang": null,
@@ -92,7 +101,8 @@
    "archived": false,
    "created": "2022-08-29",
    "pushed": "2022-08-29",
-   "commits": 6
+   "commits": 6,
+   "fresh": false
   },
   {
    "id": "897899675",
@@ -102,6 +112,7 @@
    "created": "2024-12-03",
    "pushed": "2026-08-22",
    "commits": 88,
+   "fresh": false,
    "label": "advent24",
    "owner": "romanaerl",
    "lang": "PHP",
@@ -115,7 +126,8 @@
    "archived": false,
    "created": "2024-12-08",
    "pushed": "2024-12-08",
-   "commits": 2
+   "commits": 2,
+   "fresh": false
   },
   {
    "id": "948186306",
@@ -124,7 +136,8 @@
    "archived": false,
    "created": "2025-03-13",
    "pushed": "2025-03-13",
-   "commits": 1
+   "commits": 1,
+   "fresh": false
   },
   {
    "id": "998951277",
@@ -133,7 +146,8 @@
    "archived": false,
    "created": "2025-06-09",
    "pushed": "2025-06-09",
-   "commits": 37
+   "commits": 37,
+   "fresh": false
   },
   {
    "id": "1030351354",
@@ -142,7 +156,8 @@
    "archived": false,
    "created": "2025-08-01",
    "pushed": "2026-05-07",
-   "commits": 131
+   "commits": 131,
+   "fresh": false
   },
   {
    "id": "1040773846",
@@ -151,7 +166,8 @@
    "archived": false,
    "created": "2025-08-19",
    "pushed": "2025-08-19",
-   "commits": 2
+   "commits": 2,
+   "fresh": false
   },
   {
    "id": "1041993867",
@@ -160,7 +176,8 @@
    "archived": false,
    "created": "2025-08-21",
    "pushed": "2025-08-21",
-   "commits": 9
+   "commits": 9,
+   "fresh": false
   },
   {
    "id": "1197464631",
@@ -169,7 +186,8 @@
    "archived": false,
    "created": "2026-03-31",
    "pushed": "2026-07-12",
-   "commits": 8
+   "commits": 8,
+   "fresh": false
   },
   {
    "id": "1210762049",
@@ -178,7 +196,8 @@
    "archived": false,
    "created": "2026-04-14",
    "pushed": "2026-04-18",
-   "commits": 6
+   "commits": 6,
+   "fresh": false
   },
   {
    "id": "1231316259",
@@ -187,7 +206,8 @@
    "archived": false,
    "created": "2026-05-06",
    "pushed": "2026-11-25",
-   "commits": 2410
+   "commits": 2410,
+   "fresh": true
   },
   {
    "id": "1237464483",
@@ -196,7 +216,8 @@
    "archived": false,
    "created": "2026-05-13",
    "pushed": "2026-05-13",
-   "commits": 1
+   "commits": 1,
+   "fresh": false
   },
   {
    "id": "1237745500",
@@ -205,7 +226,8 @@
    "archived": false,
    "created": "2026-05-13",
    "pushed": "2026-11-25",
-   "commits": 2491
+   "commits": 2495,
+   "fresh": true
   },
   {
    "id": "1238032255",
@@ -214,7 +236,8 @@
    "archived": false,
    "created": "2026-05-13",
    "pushed": "2026-11-25",
-   "commits": 2018
+   "commits": 2018,
+   "fresh": true
   },
   {
    "id": "1337636362",
@@ -223,7 +246,8 @@
    "archived": false,
    "created": "2026-08-17",
    "pushed": "2026-11-25",
-   "commits": 1018
+   "commits": 1019,
+   "fresh": true
   },
   {
    "id": "1360505409",
@@ -232,7 +256,8 @@
    "archived": false,
    "created": "2026-09-07",
    "pushed": "2026-11-25",
-   "commits": 59
+   "commits": 59,
+   "fresh": true
   },
   {
    "id": "1380695148",
@@ -241,7 +266,8 @@
    "archived": false,
    "created": "2026-09-22",
    "pushed": "2026-11-08",
-   "commits": 25
+   "commits": 25,
+   "fresh": false
   },
   {
    "id": "1391490898",
@@ -250,7 +276,8 @@
    "archived": false,
    "created": "2026-09-27",
    "pushed": "2026-10-31",
-   "commits": 210
+   "commits": 210,
+   "fresh": false
   },
   {
    "id": "1407633578",
@@ -260,6 +287,7 @@
    "created": "2026-10-06",
    "pushed": "2026-11-25",
    "commits": 25,
+   "fresh": true,
    "label": "open3dpc",
    "owner": "Open3DPC",
    "lang": "Swift",
@@ -274,6 +302,7 @@
    "created": "2026-10-08",
    "pushed": "2026-10-15",
    "commits": 60,
+   "fresh": false,
    "label": "M5StickPomodoro",
    "owner": "romanaerl",
    "lang": "C++",
@@ -287,7 +316,8 @@
    "archived": false,
    "created": "2026-10-09",
    "pushed": "2026-11-25",
-   "commits": 28,
+   "commits": 29,
+   "fresh": true,
    "label": "romanaerl.github.io",
    "owner": "romanaerl",
    "lang": "Python",
@@ -301,7 +331,8 @@
    "archived": false,
    "created": "2026-11-02",
    "pushed": "2026-11-25",
-   "commits": 1550
+   "commits": 1558,
+   "fresh": true
   },
   {
    "id": "1471015354",
@@ -310,7 +341,8 @@
    "archived": false,
    "created": "2026-11-25",
    "pushed": "2026-11-25",
-   "commits": 1
+   "commits": 1,
+   "fresh": false
   },
   {
    "id": "1472244120",
@@ -319,7 +351,8 @@
    "archived": false,
    "created": "2026-11-25",
    "pushed": "2026-11-25",
-   "commits": 20
+   "commits": 20,
+   "fresh": true
   }
  ],
  "links": [
