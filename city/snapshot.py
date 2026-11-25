@@ -4,10 +4,12 @@ The city holds Roman's own repos and the repos of his organizations (ORGS). Repo
 numeric GitHub ID: it survives renames and transfers (a repo moved into an org keeps its lot) and says
 nothing about the name. A real name and owner are kept only for repos shown in full: public ones and
 private ones listed in allow-private.txt. Other private repos keep only numbers: commits, dates, links.
+Push times stay out of the file (they would show the hours Roman works): the snapshot keeps only the time it
+was taken itself and, per repo, `fresh`: whether it was pushed after the previous snapshot was taken.
 
 usage: python3 snapshot.py --edition 3 --date 2026-10-20 --prev editions/edition-2.json --out editions/edition-3.json
 """
-import argparse, base64, json, os, re, subprocess
+import argparse, base64, datetime, json, os, re, subprocess
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 USER = 'romanaerl'
@@ -73,8 +75,12 @@ def main():
     ap.add_argument('--prev')
     ap.add_argument('--since', help='date of the previous edition, when there is no --prev snapshot')
     ap.add_argument('--out', required=True)
+    ap.add_argument('--prev-taken', help='UTC time the --prev snapshot was taken, e.g. 2026-11-25T11:02:43Z, '
+                                         'for an old --prev file without "taken"')
     args = ap.parse_args()
     prev = json.load(open(args.prev)) if args.prev else {}
+    taken = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    prev_taken = prev.get('taken') or args.prev_taken
 
     repos = all_repos()
     allow = allowed_private()
@@ -97,6 +103,8 @@ def main():
         rec = {'id': str(r['id']), 'shown': shown, 'fork': r['fork'], 'archived': r['archived'],
                'created': r['created_at'][:10], 'pushed': r['pushed_at'][:10],
                'commits': 0 if r['fork'] else count(f'repos/{full}/commits')}
+        if prev_taken:                                     # crane: pushed after the previous snapshot
+            rec['fresh'] = r['pushed_at'] > prev_taken
         if shown:
             rec.update(label=name, owner=r['owner']['login'], lang=r['language'], stars=r['stargazers_count'],
                        releases=count(f'repos/{full}/releases'))
@@ -122,7 +130,8 @@ def main():
         for a, b in zip(members, members[1:]):
             links.add((*sorted([a, b]), 'family'))
 
-    snap = {'edition': args.edition, 'date': args.date, 'prev_date': prev.get('date', args.since or args.date),
+    snap = {'edition': args.edition, 'date': args.date, 'taken': taken,
+            'prev_date': prev.get('date', args.since or args.date),
             'repos': out_repos, 'links': [{'a': a, 'b': b, 'kind': k} for a, b, k in sorted(links)],
             'slots': prev.get('slots', {}), 'back_lots': prev.get('back_lots', {}),
             'props': prev.get('props', {})}

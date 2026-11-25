@@ -7,7 +7,8 @@ Back rows: other private repos as anonymous hazy silhouettes, each on a permanen
 A new front building, also a private repo that went public and steps forward, takes the free front lot where
 it hides the least fresh back-row work (repos pushed in the last half year; LOTS order breaks ties). A repo
 that stepped forward keeps its back lot too, empty, and its popup says it stepped out of the back row.
-Skybridges = dependencies/submodules, thin wires = same name prefix, cranes = work since the last edition.
+Skybridges = dependencies/submodules, thin wires = same name prefix, cranes = work since the last edition
+(pushed after the previous snapshot was taken; older snapshots without `fresh` compare by date).
 Every object's <title> is its hover popup; a prop also gets a <desc> (its story, the card a click opens) and
 data-since="Edition N · date" on its <g>. The page script in index.html reads both.
 
@@ -49,6 +50,11 @@ def progress(p, edition):
         return f' · stepped out of the back row since edition {edition - 1}'
     d = p['commits'] - before
     return f' · +{d} since edition {edition - 1}' if d > 0 else ' · quiet lately'
+
+
+def fresh(p, since):
+    """Crane: pushed after the previous snapshot. Snapshots before edition 16 only know dates."""
+    return p['fresh'] if 'fresh' in p else p['pushed'] > since
 
 
 def back_x(row, k):
@@ -152,7 +158,7 @@ def scene(data):
             body, side = [(('#bccad6', '#b0bfcc'), ('#a7b6c5', '#97a8b9')),
                           (('#cfd9e2', '#c6d1db'), ('#bfcbd6', '#b3c0cc'))][row][0 if old else 1]
             r(x, BASE - h, w, h, body); r(x + w - 2, BASE - h, 2, h, side)
-            if p['pushed'] > since:                        # small crane: work since the last edition
+            if fresh(p, since):                            # small crane: work since the last edition
                 r(x + 1, BASE - h - 8, 1, 8, '#b9a26a'); r(x - 1, BASE - h - 8, 8, 1, '#b9a26a')
             tops[p['id']] = (row, x, w, BASE - h)
         group()
@@ -208,7 +214,7 @@ def scene(data):
         if p['archived']:                                  # ivy
             for iy in range(top + 2, BASE, 4):
                 r(x0, iy, 2, 2, '#4f9a3c')
-        if p['pushed'] > since:                            # crane (behind the HQ sign)
+        if fresh(p, since):                                # crane (behind the HQ sign)
             mx = x0 + 2
             r(mx, top - 14, 1, 12, '#d79a1e'); r(mx - 3, top - 14, 14, 1, '#d79a1e')
             r(mx + 9, top - 13, 1, 4, '#555'); r(mx + 8, top - 9, 3, 1, '#555')
