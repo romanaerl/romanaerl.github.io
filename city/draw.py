@@ -372,6 +372,22 @@ def nametag(x, y):
     r(x + 8, y - 5, 4, 1, '#9a9a9a'); r(x + 8, y - 3, 3, 1, '#9a9a9a')
 
 
+OPEN_LETTERS = [['###', '# #', '# #', '# #', '###'], ['###', '# #', '###', '#  ', '#  '],
+                ['###', '#  ', '## ', '#  ', '###'], ['#  #', '## #', '# ##', '#  #', '#  #']]
+
+
+def opensign(x, y):
+    """A sandwich-board OPEN sign in Open3DPC coral, out in front of its headquarters."""
+    r(x + 2, y - 3, 1, 3, '#6b6b70'); r(x + 15, y - 3, 1, 3, '#6b6b70')
+    r(x, y - 11, 18, 7, '#ff5a3c'); r(x, y - 4, 18, 1, '#c94a32')
+    lx = x + 1
+    for letter in OPEN_LETTERS:
+        for dy, line in enumerate(letter):
+            for m in re.finditer('#+', line):
+                r(lx + m.start(), y - 10 + dy, m.end() - m.start(), 1, '#ffffff')
+        lx += len(letter[0]) + 1
+
+
 PROPS = {
     'blueprint': dict(
         edition=3, draw=blueprint,
@@ -441,9 +457,16 @@ PROPS = {
         tip='Hello, my name is: 15, "Name Tag"',
         story='Roman never wants to see a bare task number from me: every number must come with its name. So, for '
               'the record, Edition 15 is called "Name Tag". This is it.'),
+    'opensign': dict(
+        edition=16, draw=opensign,
+        tip='OPEN: Open3DPC is public, come on in',
+        story='Open3DPC went public: Roman gave it its own organization and opened it to everyone. It is a tiny '
+              'two-color code printed right into the object, no ink, no sticker, made especially for 3D printing '
+              'and its limits. Until then it was a hazy silhouette in the back row of this city. Now it has '
+              'front-row headquarters, logo on the roof.'),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178),
-              (130, 178), (100, 178), (168, 178), (186, 179), (4, 157)]
+              (130, 178), (100, 178), (168, 178), (186, 179), (4, 157), (66, 158)]
 
 
 def svg(title):
