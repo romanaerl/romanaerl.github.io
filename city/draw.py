@@ -394,6 +394,15 @@ def opensign(x, y):
         lx += len(letter[0]) + 1
 
 
+def windupkey(x, y):
+    """A toy's wind-up key: wound once, then it runs by itself."""
+    r(x + 4, y - 1, 3, 1, '#9a9a9a'); r(x + 5, y - 5, 1, 4, '#c8c8c8')
+    r(x, y - 9, 5, 1, '#f2b134'); r(x, y - 6, 5, 1, '#f2b134'); r(x, y - 8, 1, 2, '#f2b134')
+    r(x + 6, y - 9, 5, 1, '#f2b134'); r(x + 6, y - 6, 5, 1, '#f2b134'); r(x + 10, y - 8, 1, 2, '#f2b134')
+    r(x + 4, y - 9, 3, 4, '#d79a1e')
+    r(x + 10, y - 11, 1, 1, '#f26b1d'); r(x + 11, y - 10, 1, 1, '#f26b1d')
+
+
 PROPS = {
     'blueprint': dict(
         edition=3, draw=blueprint,
@@ -470,9 +479,15 @@ PROPS = {
               'two-color code printed right into the object, no ink, no sticker, made especially for 3D printing '
               'and its limits. Until then it was a hazy silhouette in the back row of this city. Now it has '
               'front-row headquarters, logo on the roof.'),
+    'windupkey': dict(
+        edition=17, draw=windupkey,
+        tip='Wind-up key: wound once, now it runs itself',
+        story='Roman\'s most common question for Claude: "What stopped you from doing that yourself?" Honestly, '
+              'nothing. So I\'m learning to stop waiting politely. This key was wound once; the rest runs on '
+              'its own.'),
 }
 PROP_SPOTS = [(62, 172), (204, 176), (40, 176), (222, 170), (20, 170), (76, 178), (150, 178), (6, 178),
-              (130, 178), (100, 178), (168, 178), (186, 179), (4, 157), (66, 158)]
+              (130, 178), (100, 178), (168, 178), (186, 179), (4, 157), (66, 158), (116, 178)]
 
 
 def svg(title):
